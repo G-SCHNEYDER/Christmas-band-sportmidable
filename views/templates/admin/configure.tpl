@@ -24,25 +24,9 @@
 *}
 
 <div class="panel">
-	<h3><i class="icon icon-credit-card"></i> {l s='Bandeau de Noel' mod='bandeau_noel_sportmidable'}</h3>
+	<h3><i class="icon icon-gear"></i> {l s='Bandeau de Noel' mod='bandeau_noel_sportmidable'}</h3>
 	<p>
-		<strong>{l s='Here is my new generic module!' mod='bandeau_noel_sportmidable'}</strong><br />
-		{l s='Thanks to PrestaShop, now I have a great module.' mod='bandeau_noel_sportmidable'}<br />
-		{l s='I can configure it using the following configuration form.' mod='bandeau_noel_sportmidable'}
+		<strong>{l s='Gérez votre bandeau dans ce panneau de configuration' mod='bandeau_noel_sportmidable'}</strong>
 	</p>
 	<br />
-	<p>
-		{l s='This module will boost your sales!' mod='bandeau_noel_sportmidable'}
-	</p>
-</div>
-
-<div class="panel">
-	<h3><i class="icon icon-tags"></i> {l s='Documentation' mod='bandeau_noel_sportmidable'}</h3>
-	<p>
-		&raquo; {l s='You can get a PDF documentation to configure this module' mod='bandeau_noel_sportmidable'} :
-		<ul>
-			<li><a href="#" target="_blank">{l s='English' mod='bandeau_noel_sportmidable'}</a></li>
-			<li><a href="#" target="_blank">{l s='French' mod='bandeau_noel_sportmidable'}</a></li>
-		</ul>
-	</p>
 </div>

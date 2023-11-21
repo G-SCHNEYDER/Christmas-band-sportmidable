@@ -25,10 +25,15 @@
 */
 $sql = array();
 
+/*
+
+// No need for SQL Table for now 
+
 $sql[] = 'CREATE TABLE IF NOT EXISTS `' . _DB_PREFIX_ . 'bandeau_noel_sportmidable` (
     `id_bandeau_noel_sportmidable` int(11) NOT NULL AUTO_INCREMENT,
     PRIMARY KEY  (`id_bandeau_noel_sportmidable`)
 ) ENGINE=' . _MYSQL_ENGINE_ . ' DEFAULT CHARSET=utf8;';
+*/
 
 foreach ($sql as $query) {
     if (Db::getInstance()->execute($query) == false) {

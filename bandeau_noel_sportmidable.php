@@ -68,12 +68,16 @@ class Bandeau_noel_sportmidable extends Module
         return parent::install() &&
             $this->registerHook('header') &&
             $this->registerHook('displayBackOfficeHeader') &&
-            $this->registerHook('displayBanner');
+            $this->registerHook('displayTop');
+            Configuration::updateValue('BANDEAU_NOEL_TEXT', 'Default module text');
+            Configuration::updateValue('BANDEAU_NOEL_BG_COLOR', '');
     }
 
     public function uninstall()
     {
         Configuration::deleteByName('BANDEAU_NOEL_SPORTMIDABLE_LIVE_MODE');
+        Configuration::deleteByName('BANDEAU_NOEL_TEXT');
+        Configuration::deleteByName('BANDEAU_NOEL_BG_COLOR');
 
         include(dirname(__FILE__).'/sql/uninstall.php');
 
@@ -100,13 +104,13 @@ class Bandeau_noel_sportmidable extends Module
     }
 
     /**
-     * Create the form that will be displayed in the configuration of your module.
+     * Create the form that will be displayed in the configuration page.
      */
     protected function renderForm()
     {
         $helper = new HelperForm();
 
-        $helper->show_toolbar = false;
+        $helper->show_toolbar = true;
         $helper->table = $this->table;
         $helper->module = $this;
         $helper->default_form_language = $this->context->language->id;
@@ -141,10 +145,10 @@ class Bandeau_noel_sportmidable extends Module
                 'input' => array(
                     array(
                         'type' => 'switch',
-                        'label' => $this->l('Live mode'),
+                        'label' => $this->l('Activer l\'affichage du bandeau'),
                         'name' => 'BANDEAU_NOEL_SPORTMIDABLE_LIVE_MODE',
                         'is_bool' => true,
-                        'desc' => $this->l('Use this module in live mode'),
+                        'desc' => $this->l('Permet l\'activation de l\'affichage'),
                         'values' => array(
                             array(
                                 'id' => 'active_on',
@@ -161,15 +165,15 @@ class Bandeau_noel_sportmidable extends Module
                     array(
                         'col' => 3,
                         'type' => 'text',
-                        'prefix' => '<i class="icon icon-envelope"></i>',
-                        'desc' => $this->l('Enter a valid email address'),
-                        'name' => 'BANDEAU_NOEL_SPORTMIDABLE_ACCOUNT_EMAIL',
-                        'label' => $this->l('Email'),
+                        'desc' => $this->l('Entrez le texte de la bannière'),
+                        'name' => 'BANDEAU_NOEL_TEXT',
+                        'label' => $this->l('Texte du bandeau'),
                     ),
                     array(
-                        'type' => 'password',
-                        'name' => 'BANDEAU_NOEL_SPORTMIDABLE_ACCOUNT_PASSWORD',
-                        'label' => $this->l('Password'),
+                        'type' => 'color',
+                        'name' => 'BANDEAU_NOEL_BG_COLOR',
+                        'desc' => $this->l('Sélectionnez la couleur de la bannière'),
+                        'label' => $this->l('Couleur de fond'),
                     ),
                 ),
                 'submit' => array(
@@ -186,8 +190,8 @@ class Bandeau_noel_sportmidable extends Module
     {
         return array(
             'BANDEAU_NOEL_SPORTMIDABLE_LIVE_MODE' => Configuration::get('BANDEAU_NOEL_SPORTMIDABLE_LIVE_MODE', true),
-            'BANDEAU_NOEL_SPORTMIDABLE_ACCOUNT_EMAIL' => Configuration::get('BANDEAU_NOEL_SPORTMIDABLE_ACCOUNT_EMAIL', 'contact@prestashop.com'),
-            'BANDEAU_NOEL_SPORTMIDABLE_ACCOUNT_PASSWORD' => Configuration::get('BANDEAU_NOEL_SPORTMIDABLE_ACCOUNT_PASSWORD', null),
+            'BANDEAU_NOEL_TEXT' => Configuration::get('BANDEAU_NOEL_TEXT'),
+            'BANDEAU_NOEL_BG_COLOR' => Configuration::get('BANDEAU_NOEL_BG_COLOR', null),
         );
     }
 
@@ -223,8 +227,11 @@ class Bandeau_noel_sportmidable extends Module
         $this->context->controller->addCSS($this->_path.'/views/css/front.css');
     }
 
-    public function hookDisplayBanner()
+    public function hookDisplayTop()
     {
-        /* Place your code here. */
+        $this->context->smarty->assign([
+            'banner_color' => Configuration::get('BANDEAU_NOEL_BG_COLOR'),
+            'banner_message' => Configuration::get('BANDEAU_NOEL_TEXT')
+        ]);
     }
 }
