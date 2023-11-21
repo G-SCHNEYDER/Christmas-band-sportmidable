@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<module>
+	<name>bandeau_noel_sportmidable</name>
+	<displayName><![CDATA[Bandeau de Noel]]></displayName>
+	<version><![CDATA[1.0.0]]></version>
+	<description><![CDATA[Affichage simple d\'un bandeau de noel ]]></description>
+	<author><![CDATA[G_SCHNEYDER]]></author>
+	<tab><![CDATA[front_office_features]]></tab>
+	<is_configurable>1</is_configurable>
+	<need_instance>1</need_instance>
+</module>
