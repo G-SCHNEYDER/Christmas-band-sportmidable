@@ -1,0 +1,12 @@
+# Cache, temp and personal files
+
+/.htaccess
+*.log
+
+# Vendors and dependencies
+
+bower_components/
+node_modules/
+composer.phar
+php-cs-fixer
+.grunt/*

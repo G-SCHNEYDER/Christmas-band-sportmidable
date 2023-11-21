@@ -23,10 +23,4 @@
 *  International Registered Trademark & Property of PrestaShop SA
 *}
 
-<div class="panel">
-	<h3><i class="icon icon-gear"></i> {l s='Bandeau de Noel' mod='bandeau_noel_sportmidable'}</h3>
-	<p>
-		<strong>{l s='Gérez votre bandeau dans ce panneau de configuration' mod='bandeau_noel_sportmidable'}</strong>
-	</p>
-	<br />
-</div>
+{* If you need more information to display, put your html here it will display before the form *}

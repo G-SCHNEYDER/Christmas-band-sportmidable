@@ -69,15 +69,18 @@ class Bandeau_noel_sportmidable extends Module
             $this->registerHook('header') &&
             $this->registerHook('displayBackOfficeHeader') &&
             $this->registerHook('displayTop');
-            Configuration::updateValue('BANDEAU_NOEL_TEXT', 'Default module text');
+            Configuration::updateValue('BANDEAU_NOEL_TEXT', '');
             Configuration::updateValue('BANDEAU_NOEL_BG_COLOR', '');
+            Configuration::updateValue('BANDEAU_NOEL_TEXT_COLOR', '');
+            Configuration::updateValue('BANDEAU_NOEL_AFFICHAGE_KDO', '');
     }
 
     public function uninstall()
     {
-        Configuration::deleteByName('BANDEAU_NOEL_SPORTMIDABLE_LIVE_MODE');
+        Configuration::deleteByName('BANDEAU_NOEL_AFFICHAGE_KDO');
         Configuration::deleteByName('BANDEAU_NOEL_TEXT');
         Configuration::deleteByName('BANDEAU_NOEL_BG_COLOR');
+        Configuration::deleteByName('BANDEAU_NOEL_TEXT_COLOR');
 
         include(dirname(__FILE__).'/sql/uninstall.php');
 
@@ -96,7 +99,9 @@ class Bandeau_noel_sportmidable extends Module
             $this->postProcess();
         }
 
-        $this->context->smarty->assign('module_dir', $this->_path);
+        $this->context->smarty->assign([
+            'module_dir' => $this->_path,
+        ]);
 
         $output = $this->context->smarty->fetch($this->local_path.'views/templates/admin/configure.tpl');
 
@@ -139,16 +144,35 @@ class Bandeau_noel_sportmidable extends Module
         return array(
             'form' => array(
                 'legend' => array(
-                'title' => $this->l('Settings'),
+                'title' => $this->l('Configuration du bandeau'),
                 'icon' => 'icon-cogs',
                 ),
                 'input' => array(
                     array(
+                        'col' => 8,
+                        'type' => 'text',
+                        'desc' => $this->l('Entrez le texte de la bannière'),
+                        'name' => 'BANDEAU_NOEL_TEXT',
+                        'label' => $this->l('Texte du bandeau'),
+                    ),
+                    array(
+                        'type' => 'color',
+                        'name' => 'BANDEAU_NOEL_TEXT_COLOR',
+                        'desc' => $this->l('Sélectionnez la couleur de votre texte'),
+                        'label' => $this->l('Couleur de texte'),
+                    ),
+                    array(
+                        'type' => 'color',
+                        'name' => 'BANDEAU_NOEL_BG_COLOR',
+                        'desc' => $this->l('Sélectionnez la couleur de la bannière'),
+                        'label' => $this->l('Couleur de fond'),
+                    ),
+                    array(
                         'type' => 'switch',
-                        'label' => $this->l('Activer l\'affichage du bandeau'),
-                        'name' => 'BANDEAU_NOEL_SPORTMIDABLE_LIVE_MODE',
+                        'label' => $this->l('Activer l\'émoji cadeau'),
+                        'name' => 'BANDEAU_NOEL_AFFICHAGE_KDO',
                         'is_bool' => true,
-                        'desc' => $this->l('Permet l\'activation de l\'affichage'),
+                        'desc' => $this->l('Permet l\'activation de l\'affichage d\'un émoji cadeau à la fin de la phrase'),
                         'values' => array(
                             array(
                                 'id' => 'active_on',
@@ -161,19 +185,6 @@ class Bandeau_noel_sportmidable extends Module
                                 'label' => $this->l('Disabled')
                             )
                         ),
-                    ),
-                    array(
-                        'col' => 3,
-                        'type' => 'text',
-                        'desc' => $this->l('Entrez le texte de la bannière'),
-                        'name' => 'BANDEAU_NOEL_TEXT',
-                        'label' => $this->l('Texte du bandeau'),
-                    ),
-                    array(
-                        'type' => 'color',
-                        'name' => 'BANDEAU_NOEL_BG_COLOR',
-                        'desc' => $this->l('Sélectionnez la couleur de la bannière'),
-                        'label' => $this->l('Couleur de fond'),
                     ),
                 ),
                 'submit' => array(
@@ -189,9 +200,10 @@ class Bandeau_noel_sportmidable extends Module
     protected function getConfigFormValues()
     {
         return array(
-            'BANDEAU_NOEL_SPORTMIDABLE_LIVE_MODE' => Configuration::get('BANDEAU_NOEL_SPORTMIDABLE_LIVE_MODE', true),
+            'BANDEAU_NOEL_AFFICHAGE_KDO' => Configuration::get('BANDEAU_NOEL_AFFICHAGE_KDO', true),
             'BANDEAU_NOEL_TEXT' => Configuration::get('BANDEAU_NOEL_TEXT'),
             'BANDEAU_NOEL_BG_COLOR' => Configuration::get('BANDEAU_NOEL_BG_COLOR', null),
+            'BANDEAU_NOEL_TEXT_COLOR' => Configuration::get('BANDEAU_NOEL_TEXT_COLOR', null),
         );
     }
 
@@ -230,8 +242,12 @@ class Bandeau_noel_sportmidable extends Module
     public function hookDisplayTop()
     {
         $this->context->smarty->assign([
+            'banner_allow_kdo' => Configuration::get('BANDEAU_NOEL_AFFICHAGE_KDO'),
             'banner_color' => Configuration::get('BANDEAU_NOEL_BG_COLOR'),
-            'banner_message' => Configuration::get('BANDEAU_NOEL_TEXT')
+            'banner_message' => Configuration::get('BANDEAU_NOEL_TEXT'),
+            'banner_text_color' => Configuration::get('BANDEAU_NOEL_TEXT_COLOR')
         ]);
+
+        return $this->context->smarty->fetch($this->local_path.'views/templates/front/bandeau.tpl');
     }
 }
